@@ -12,7 +12,7 @@ import datetime
 import pandas as pd
 from matplotlib.ticker import FormatStrFormatter
 
-
+print("Libraries Data")
 # In[2]:
 
 
