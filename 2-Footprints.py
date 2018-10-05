@@ -56,7 +56,7 @@ data.columns = list(header)
 # In[4]:
 
 
-data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: int(fecha[6:]))
+data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: float(fecha[6:]))
 
 
 # In[5]:
@@ -69,7 +69,7 @@ data.head()
 
 # ### Clientes
 
-# In[7]:
+# In[6]:
 
 
 # DEFINIMOS LA LISTA DE CLIENTES
@@ -104,7 +104,7 @@ clientes
 # 1. <div> **user**:  Dataset original filtrado para un cliente determinado</div> 
 # 2. <div> **monto**: Indica si los footprint seran generados con la suma de los el numero de TXs (False) o la suma de los montos por cada TX (True)</div> 
 
-# In[8]:
+# In[7]:
 
 
 def procesar_u(user, tipo_eth = False):    
@@ -146,7 +146,7 @@ def procesar_u(user, tipo_eth = False):
 # 
 # 
 
-# In[9]:
+# In[8]:
 
 
 ##################################################
@@ -167,7 +167,7 @@ for cliente in clientes:
         print("vamos en el ",contador)
 
 
-# In[10]:
+# In[9]:
 
 
 # profiles
@@ -175,13 +175,13 @@ for cliente in clientes:
 
 # Creamos la cabecera dinámica donde se guardaran todos los footprints generados
 
-# In[11]:
+# In[10]:
 
 
 cabecera = 'CO_ID,YEAR,WEEK,PROFILE_ID,SIZE'
 
 
-# In[12]:
+# In[11]:
 
 
 for i in range(7):      # numero de dias
@@ -191,7 +191,7 @@ for i in range(7):      # numero de dias
 cabecera = cabecera+'\n'
 
 
-# In[13]:
+# In[12]:
 
 
 outfile='./resultados/U'           # Indicamos archivo de salida 
@@ -201,7 +201,7 @@ fw=open(individual_footprint,'w')
 fw.write(cabecera)                    # Escribimos la cabecera
 
 
-# In[14]:
+# In[13]:
 
 
 
@@ -238,7 +238,7 @@ fw.close()
 print ("number of footprint: "+str(footprints))
 
 
-# In[15]:
+# In[14]:
 
 
 file='./resultados/U' 
@@ -246,7 +246,7 @@ footprint="%s.footprint" %(file)
 data = pd.read_csv(footprint)
 
 
-# In[16]:
+# In[15]:
 
 
 print("Done")
