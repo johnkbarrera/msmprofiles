@@ -56,7 +56,7 @@ data.columns = list(header)
 # In[4]:
 
 
-data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: float(fecha[6:]))
+data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: int(fecha[6:]))
 
 
 # In[5]:
