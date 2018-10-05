@@ -97,5 +97,5 @@ ax4.set_title('Consumo Mobil por Billcycle')
 ax4.set_xlabel('Billcycle')
 ax4.set_ylabel('GBs')
 
-plt.savefig("./resultados/imagen.png",dpi = 1000)
+plt.savefig("./resultados/Analisis.png",dpi = 1000)
 
