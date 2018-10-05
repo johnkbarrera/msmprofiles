@@ -19,8 +19,8 @@ from matplotlib.ticker import FormatStrFormatter
 # In[2]:
 
 
-#path = "../data"   #Path server 
-path = "./data" 
+path = "../data"   #Path server 
+#path = "./data" 
 
 p_header="%s/header.txt" %(path)
 p_data="%s/mobile_consume.csv" %(path)
