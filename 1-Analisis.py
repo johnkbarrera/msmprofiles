@@ -7,7 +7,10 @@
 
 
 import numpy as np
-import matplotlib.pyplot as plt
+
+import matplotlib
+matplotlib.use('Agg')
+import pylab as plt
 import datetime
 import pandas as pd
 from matplotlib.ticker import FormatStrFormatter
