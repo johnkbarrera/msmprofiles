@@ -99,3 +99,5 @@ ax4.set_ylabel('GBs')
 
 plt.savefig("./resultados/Analisis.png",dpi = 1000)
 
+
+print("Image Plotted")
