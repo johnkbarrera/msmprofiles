@@ -12,11 +12,11 @@ import datetime
 import pandas as pd
 from matplotlib.ticker import FormatStrFormatter
 
-print("Libraries Data")
+
 # In[2]:
 
 
-path = "../data" 
+path = "../data"   #Path server 
 #path = "./data" 
 
 p_header="%s/header.txt" %(path)
@@ -35,7 +35,7 @@ print("Loaded Data")
 # In[4]:
 
 
-data.head()
+#data.head()
 
 
 # In[5]:
@@ -49,6 +49,7 @@ data["BILLCYCLE"] = data["BILLCYCLE"].fillna(9)
 
 data['F_TRAFICO'] = pd.to_datetime(data['F_TRAFICO'])
 data['WEEK_DAY'] = data['F_TRAFICO'].dt.dayofweek
+print("Ploting...")
 
 
 # In[7]:
@@ -98,6 +99,5 @@ ax4.set_xlabel('Billcycle')
 ax4.set_ylabel('GBs')
 
 plt.savefig("./resultados/Analisis.png",dpi = 1000)
+print("Finalizado")
 
-
-print("Image Plotted")
