@@ -8,9 +8,13 @@
 
 import numpy as np
 
-import matplotlib
-matplotlib.use('Agg')
-import pylab as plt
+#import matplotlib
+#matplotlib.use('Agg')
+#import pylab as plt
+
+import matplotlib.pylab as plt
+
+
 import datetime
 import pandas as pd
 from matplotlib.ticker import FormatStrFormatter
@@ -30,6 +34,8 @@ p_data="%s/mobile_consume.csv" %(path)
 
 
 header = pd.read_csv(p_header)
+#data = pd.read_csv(p_data , header = None, dtype={'GB_TOTAL': float,'HORA': int})
+
 data = pd.read_csv(p_data , header = None)
 data.columns = list(header)
 print("Loaded Data")
@@ -38,7 +44,7 @@ print("Loaded Data")
 # In[4]:
 
 
-#data.head()
+data.head()
 
 
 # In[5]:
@@ -50,12 +56,23 @@ data["BILLCYCLE"] = data["BILLCYCLE"].fillna(9)
 # In[6]:
 
 
-data['F_TRAFICO'] = pd.to_datetime(data['F_TRAFICO'])
+data['F_TRAFICO'] = pd.to_datetime(data['F_TRAFICO'], format='%d/%m/%Y', errors='coerce')
+
+
+# In[7]:
+
+
+#data['F_TRAFICO'] = pd.to_datetime(data['F_TRAFICO'])
+
+
+# In[8]:
+
+
 data['WEEK_DAY'] = data['F_TRAFICO'].dt.dayofweek
 print("Ploting...")
 
 
-# In[7]:
+# In[9]:
 
 
 fig, axes = plt.subplots(1, 4, figsize=(14,2), sharex='col')
@@ -86,8 +103,7 @@ ax2.set_xlabel('Horas')
 ax2.set_ylabel('GBs')
 
 y = data.groupby(['WEEK_DAY']).sum()['GB_TOTAL']
-tag =['Mon','Tue','Wed','Thu','Fri','Sat','Sun']  
-ax3.bar(y.index,y.values,0.7,color='Orange')
+ax3.bar(list(y.keys()),list(y.values),  align='center', color='Orange')
 ax3.plot(y.index,y.values,'-',color='#ff0000')
 ax3.plot(y.index,y.values,'ob',color='#990000')
 ax3.set_title('Consumo Mobil por Dia')
@@ -95,8 +111,7 @@ ax3.set_xlabel('Dias')
 ax3.set_ylabel('GBs')
 
 y = data.groupby(['BILLCYCLE']).sum()['GB_TOTAL']
-ax4.set_xticklabels(x, rotation=45)
-ax4.bar(y.index,y.values,color='Red')
+ax4.bar(list(y.index),y.values,color='Red',label="y.index")
 ax4.set_title('Consumo Mobil por Billcycle')
 ax4.set_xlabel('Billcycle')
 ax4.set_ylabel('GBs')
