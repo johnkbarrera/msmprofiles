@@ -8,11 +8,11 @@
 
 import numpy as np
 
-#import matplotlib
-#matplotlib.use('Agg')
-#import pylab as plt
+import matplotlib
+matplotlib.use('Agg')
+import pylab as plt
 
-import matplotlib.pylab as plt
+#import matplotlib.pylab as plt
 
 
 import datetime
@@ -72,7 +72,7 @@ data['WEEK_DAY'] = data['F_TRAFICO'].dt.dayofweek
 print("Ploting...")
 
 
-# In[10]:
+# In[9]:
 
 
 fig, axes = plt.subplots(1, 4, figsize=(14,2))
