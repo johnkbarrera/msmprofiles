@@ -47,7 +47,7 @@ p_data="%s/mobile_consume.csv" %(path)
 
 
 header = pd.read_csv(p_header)
-data = pd.read_csv(p_data , header = None)
+data = pd.read_csv(p_data , header = None, low_memory=False)
 data.columns = list(header)
 
 
@@ -57,11 +57,6 @@ data.columns = list(header)
 
 
 data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: int(fecha[6:]))
-
-
-# In[5]:
-
-
 data.head()
 
 
@@ -69,12 +64,12 @@ data.head()
 
 # ### Clientes
 
-# In[6]:
+# In[5]:
 
 
 # DEFINIMOS LA LISTA DE CLIENTES
 clientes =  data.groupby('CO_ID').CO_ID.count().index
-clientes
+print("Numero de Clientes: ",len(clientes))
 
 
 # # FOOTPRINT PARA CADA MCCG
@@ -104,7 +99,7 @@ clientes
 # 1. <div> **user**:  Dataset original filtrado para un cliente determinado</div> 
 # 2. <div> **monto**: Indica si los footprint seran generados con la suma de los el numero de TXs (False) o la suma de los montos por cada TX (True)</div> 
 
-# In[7]:
+# In[6]:
 
 
 def procesar_u(user, tipo_eth = False):    
@@ -146,7 +141,7 @@ def procesar_u(user, tipo_eth = False):
 # 
 # 
 
-# In[8]:
+# In[7]:
 
 
 ##################################################
@@ -163,11 +158,11 @@ for cliente in clientes:
     results=procesar_u(cliente_i, tipo_eth=False)          # procesamos u del usuario i
     profiles[results[0]]=results[1]                     # cargamos lista de indice "uid" con la data del cliente(json)
     contador += 1
-    if contador % 1000 == 1:
-        print("vamos en el ",contador)
+    if contador % 5000 == 1:
+        print("vamos en el cliente ",contador)
 
 
-# In[9]:
+# In[8]:
 
 
 # profiles
@@ -175,14 +170,10 @@ for cliente in clientes:
 
 # Creamos la cabecera dinámica donde se guardaran todos los footprints generados
 
-# In[10]:
+# In[9]:
 
 
 cabecera = 'CO_ID,YEAR,WEEK,PROFILE_ID,SIZE'
-
-
-# In[11]:
-
 
 for i in range(7):      # numero de dias
     for j in range(4):                # numero de turnos
@@ -191,7 +182,7 @@ for i in range(7):      # numero de dias
 cabecera = cabecera+'\n'
 
 
-# In[12]:
+# In[10]:
 
 
 outfile='./resultados/U'           # Indicamos archivo de salida 
@@ -201,7 +192,7 @@ fw=open(individual_footprint,'w')
 fw.write(cabecera)                    # Escribimos la cabecera
 
 
-# In[13]:
+# In[11]:
 
 
 
@@ -238,15 +229,7 @@ fw.close()
 print ("number of footprint: "+str(footprints))
 
 
-# In[14]:
-
-
-file='./resultados/U' 
-footprint="%s.footprint" %(file)
-data = pd.read_csv(footprint)
-
-
-# In[15]:
+# In[12]:
 
 
 print("Done")
