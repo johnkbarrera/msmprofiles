@@ -72,10 +72,10 @@ data['WEEK_DAY'] = data['F_TRAFICO'].dt.dayofweek
 print("Ploting...")
 
 
-# In[9]:
+# In[10]:
 
 
-fig, axes = plt.subplots(1, 4, figsize=(14,2), sharex='col')
+fig, axes = plt.subplots(1, 4, figsize=(14,2))
 ax1, ax2, ax3, ax4 = axes.flatten()
 plt.subplots_adjust(top=1, bottom=0.08, left=0.10, right=0.95, hspace=0.55, wspace=0.55)
 
