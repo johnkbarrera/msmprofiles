@@ -34,9 +34,9 @@ p_data="%s/mobile_consume.csv" %(path)
 
 
 header = pd.read_csv(p_header)
-#data = pd.read_csv(p_data , header = None, dtype={'GB_TOTAL': float,'HORA': int})
+data = pd.read_csv(p_data , header = None, dtype={'GB_TOTAL': float,'HORA': int}, low_memory=False)
 
-data = pd.read_csv(p_data , header = None,  dtype=None, low_memory=False)
+#data = pd.read_csv(p_data , header = None,  dtype=None, low_memory=False)
 data.columns = list(header)
 print("Loaded Data")
 
