@@ -21,7 +21,7 @@ import os, sys
 
 file='./resultados/U' 
 footprint="%s.footprint" %(file)
-data = pd.read_csv(footprint)
+data = pd.read_csv(footprint, low_memory=False)
 data.head()
 
 
@@ -293,7 +293,7 @@ def process_data(to_cluster):
     y=[K[k]['inertia'] for k in K]
     best_k=compute_best_k(x,y,len(to_cluster))
     
-    #print(str(contador)+' => clustering: '+str(clientes[n_cliente])+' len data: '+str(len(data))+" best k: "+str(best_k))
+    print(str(contador)+' => clustering: '+str(clientes[n_cliente])+' len data: '+str(len(data))+" best k: "+str(best_k))
 
     # clustering
     if best_k==1:
@@ -315,7 +315,7 @@ clientes =  data.groupby('CO_ID').CO_ID.count().index
 clientes
 
 
-# In[25]:
+# In[11]:
 
 
 
@@ -431,7 +431,7 @@ print('Done')
 
 # # Clusters Colectivos (g)
 
-# In[26]:
+# In[12]:
 
 
 file='./resultados/U' 
@@ -485,7 +485,7 @@ df_sse.columns=['x','y']
 #df_sse.to_csv('%s.png.sse.csv' %(raw_data),index=False)
 
 
-# In[27]:
+# In[13]:
 
 
 # EXPORTANDO RESULTADOS
