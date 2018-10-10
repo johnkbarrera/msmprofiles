@@ -14,20 +14,46 @@ import matplotlib.pyplot as plt
 import os, sys
 
 
-# ## Cargando datos
-
 # In[2]:
 
 
-file='./resultados/U' 
-footprint="%s.footprint" %(file)
+import configparser
+Config = configparser.ConfigParser()
+Config.read("Config.conf")
+
+
+# In[3]:
+
+
+def ConfigSectionMap(section):
+    dict1 = {}
+    options = Config.options(section)
+    for option in options:
+        try:
+            dict1[option] = Config.get(section, option)
+            if dict1[option] == -1:
+                DebugPrint("skip: %s" % option)
+        except:
+            print("exception on %s!" % option)
+            dict1[option] = None
+    return dict1
+
+
+# ## Cargando datos
+
+# In[4]:
+
+
+# Cargamos file
+footprint= ConfigSectionMap("f2")['footprints']
+
 data = pd.read_csv(footprint, low_memory=False)
 data.head()
 
 
 # Creamos parte de la cabecera que es dinamica de acuerdo al número de mccgs
 
-# In[3]:
+# In[5]:
 
 
 title = ''
@@ -63,7 +89,7 @@ title = title+'\n'
 #   
 # **MiniBatchKMeans**
 
-# In[4]:
+# In[6]:
 
 
 def process_footprint(data,tests,log=False):
@@ -97,7 +123,7 @@ def process_footprint(data,tests,log=False):
 # 
 # 
 
-# In[5]:
+# In[7]:
 
 
 def bench_k_means(estimator, name, data,distance_function=None):
@@ -133,7 +159,7 @@ def bench_k_means(estimator, name, data,distance_function=None):
 #     salida: s_final = get_change_point(k',inercia')           # MEJOR K
 #          
 
-# In[6]:
+# In[8]:
 
 
 def compute_best_k(x,y,occurrencies, plot=False,points=1000,sf=0.9):
@@ -185,7 +211,7 @@ def compute_best_k(x,y,occurrencies, plot=False,points=1000,sf=0.9):
 # FIN 
 # 
 
-# In[7]:
+# In[9]:
 
 
 def get_change_point(x, y):
@@ -235,7 +261,7 @@ def get_change_point(x, y):
 #     FIN
 # FIN   
 
-# In[8]:
+# In[10]:
 
 
 def closest_point_on_segment(a, b, p):
@@ -282,7 +308,7 @@ def closest_point_on_segment(a, b, p):
 #         selecciona el mejor k
 #     Salida: centroides y etiquetas
 
-# In[9]:
+# In[11]:
 
 
 def process_data(to_cluster):
@@ -307,7 +333,7 @@ def process_data(to_cluster):
     return cluster_centers,labels
 
 
-# In[10]:
+# In[12]:
 
 
 # Extraemos la lista de clientes sin repetir
@@ -315,12 +341,12 @@ clientes =  data.groupby('CO_ID').CO_ID.count().index
 clientes
 
 
-# In[11]:
+# In[13]:
 
 
-
-individual_clusters="%s.individual_footprint.clusters" %(file)
-individual_labels="%s.individual_footprint.labels" %(file)   
+# choosen files
+individual_clusters = ConfigSectionMap("f3")['ic_cluster']
+individual_labels= ConfigSectionMap("f3")['ic_label'] 
 
     
 # Numero de filas del archivo
@@ -431,14 +457,16 @@ print('Done')
 
 # # Clusters Colectivos (g)
 
-# In[12]:
+# In[14]:
 
 
-file='./resultados/U' 
-individual_footprint="%s.individual_footprint" %(file)
-individual_clusters="%s.clusters" %(individual_footprint)
-collective_clusters="%s.collective_footprint.clusters" %(file)
-collective_labels="%s.collective_footprint.labels" %(file)
+
+# choosen files
+individual_clusters = ConfigSectionMap("f3")['ic_cluster']
+individual_labels= ConfigSectionMap("f3")['ic_label'] 
+collective_clusters = ConfigSectionMap("f3")['cc_cluster']
+collective_labels= ConfigSectionMap("f3")['cc_label'] 
+
     
 f=open(individual_clusters)   #  uid,cluster_id,profile
 f.readline()                  #  Saltamos una linea
@@ -465,7 +493,7 @@ import pickle
 # pickle.dump( K, open( "%s.models.p" %(file), "wb" ) )
     
 # Choose K for global clustering 
-get_ipython().run_line_magic('matplotlib', 'inline')
+# %matplotlib inline
 x=sorted(K.keys())
 y=[K[k]['inertia'] for k in x]
 best_k,pylab=compute_best_k(x,y,len(to_cluster),plot=True,points=500)
@@ -476,8 +504,10 @@ plt.title("Collective clustering",fontsize=16)
 plt.ylabel("SSE",fontsize=16)
 plt.xlabel("K",fontsize=16)
 plt.tight_layout()
-plt.show()
-# pylab.savefig('%s.png' %(raw_data),dpi=200)
+#plt.show()
+#pylab.savefig('%s.png' %(raw_data),dpi=200)
+
+plt.savefig("../resultados/Global_clusters_e.png",dpi = 1000)
 
 import pandas as pd
 df_sse=pd.DataFrame([x,y]).T
@@ -485,7 +515,7 @@ df_sse.columns=['x','y']
 #df_sse.to_csv('%s.png.sse.csv' %(raw_data),index=False)
 
 
-# In[13]:
+# In[15]:
 
 
 # EXPORTANDO RESULTADOS

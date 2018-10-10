@@ -30,20 +30,49 @@ import matplotlib.pyplot as plt
 import os, sys
 
 
+# In[2]:
+
+
+import configparser
+Config = configparser.ConfigParser()
+Config.read("Config.conf")
+
+
+# In[3]:
+
+
+Config.sections()
+
+
+# In[4]:
+
+
+def ConfigSectionMap(section):
+    dict1 = {}
+    options = Config.options(section)
+    for option in options:
+        try:
+            dict1[option] = Config.get(section, option)
+            if dict1[option] == -1:
+                DebugPrint("skip: %s" % option)
+        except:
+            print("exception on %s!" % option)
+            dict1[option] = None
+    return dict1
+
+
 # ## Preparacion de datos
 
 # ### Cargando datos
 
-# In[2]:
+# In[5]:
 
 
-path = "../data"   #Path server 
-#path = "./data" 
-p_header="%s/header.txt" %(path)
-p_data="%s/mobile_consume.csv" %(path)
+p_header=ConfigSectionMap("f2")['head']
+p_data= ConfigSectionMap("f2")['data']
 
 
-# In[3]:
+# In[6]:
 
 
 header = pd.read_csv(p_header)
@@ -53,7 +82,7 @@ data.columns = list(header)
 
 # ### Preparacion de datos
 
-# In[4]:
+# In[7]:
 
 
 data['AÑO'] = data['F_TRAFICO'].apply(lambda fecha: int(fecha[6:]))
@@ -64,7 +93,7 @@ data.head()
 
 # ### Clientes
 
-# In[5]:
+# In[8]:
 
 
 # DEFINIMOS LA LISTA DE CLIENTES
@@ -99,7 +128,7 @@ print("Numero de Clientes: ",len(clientes))
 # 1. <div> **user**:  Dataset original filtrado para un cliente determinado</div> 
 # 2. <div> **monto**: Indica si los footprint seran generados con la suma de los el numero de TXs (False) o la suma de los montos por cada TX (True)</div> 
 
-# In[6]:
+# In[9]:
 
 
 def procesar_u(user, tipo_eth = False):    
@@ -141,7 +170,7 @@ def procesar_u(user, tipo_eth = False):
 # 
 # 
 
-# In[7]:
+# In[10]:
 
 
 ##################################################
@@ -162,7 +191,7 @@ for cliente in clientes:
         print("vamos en el cliente ",contador)
 
 
-# In[8]:
+# In[11]:
 
 
 # profiles
@@ -170,7 +199,7 @@ for cliente in clientes:
 
 # Creamos la cabecera dinámica donde se guardaran todos los footprints generados
 
-# In[9]:
+# In[12]:
 
 
 cabecera = 'CO_ID,YEAR,WEEK,PROFILE_ID,SIZE'
@@ -182,17 +211,17 @@ for i in range(7):      # numero de dias
 cabecera = cabecera+'\n'
 
 
-# In[10]:
+# In[13]:
 
 
-outfile='./resultados/U'           # Indicamos archivo de salida 
-individual_footprint="%s.footprint" %(outfile)
+# Indicamos archivo de salida 
+individual_footprint= ConfigSectionMap("f2")['footprints']
 fw=open(individual_footprint,'w')  
 
 fw.write(cabecera)                    # Escribimos la cabecera
 
 
-# In[11]:
+# In[14]:
 
 
 
@@ -229,7 +258,7 @@ fw.close()
 print ("number of footprint: "+str(footprints))
 
 
-# In[12]:
+# In[15]:
 
 
 print("Done")
